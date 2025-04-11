@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigos - orkut</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-image: url('https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/bg.gif');
+            background-repeat: repeat;
+        }
+        
+        #container {
+            width: 980px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        #header {
+            background-color: #EDEFF4;
+            padding: 10px 20px;
+            border-bottom: 1px solid #D8DFEA;
+            height: 60px;
+        }
+        
+        #logo {
+            float: left;
+        }
+        
+        #logo img {
+            height: 50px;
+        }
+        
+        #user-info {
+            float: right;
+            margin-top: 15px;
+            font-size: 12px;
+            background-color: white;
+            padding: 5px 10px;
+            border: 1px solid #D8DFEA;
+            border-radius: 3px;
+        }
+        
+        #nav {
+            clear: both;
+            background-color: #3B5998;
+            padding: 5px 20px;
+            background-image: linear-gradient(to bottom, #6D84B4, #3B5998);
+        }
+        
+        #nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 13px;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+        
+        #content {
+            padding: 20px;
+            display: flex;
+            min-height: 500px;
+        }
+        
+        #sidebar {
+            width: 200px;
+            margin-right: 20px;
+        }
+        
+        #main {
+            flex: 1;
+        }
+        
+        .box {
+            background-color: #F7F7F7;
+            border: 1px solid #D8DFEA;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        
+        .box h2 {
+            color: #3B5998;
+            font-size: 14px;
+            margin-top: 0;
+            border-bottom: 1px solid #D8DFEA;
+            padding-bottom: 5px;
+        }
+        
+        /* Estilos específicos para amigos */
+        .friend-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .friend-card {
+            width: 180px;
+            background: #fff;
+            border: 1px solid #D8DFEA;
+            border-radius: 3px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .friend-card-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            border: 2px solid #D8DFEA;
+        }
+        
+        .friend-card-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .friend-card-name {
+            font-weight: bold;
+            color: #3B5998;
+            margin-bottom: 5px;
+        }
+        
+        .friend-card-location {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .friend-card-mutual {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .add-friend-button {
+            background-color: #5B74A8;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            width: 100%;
+        }
+        
+        .add-friend-button:hover {
+            background-color: #3B5998;
+        }
+        
+        .add-friend-button.added {
+            background-color: #4CAF50;
+        }
+        
+        .add-friend-button.added:hover {
+            background-color: #3d8b40;
+        }
+        
+        .search-friends {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        #friend-search {
+            border: 1px solid #BDC7D8;
+            border-radius: 2px;
+            padding: 5px;
+            font-size: 12px;
+            flex: 1;
+        }
+        
+        #search-button {
+            background-color: #5B74A8;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .online-status {
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+        
+        .online {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .offline {
+            color: #999;
+        }
+        
+        #footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 11px;
+            color: #777;
+            border-top: 1px solid #D8DFEA;
+            background-color: #F7F7F7;
+        }
+        
+        #my-friends-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .no-friends {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">
+                <img src="https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/logo.gif" alt="orkut">
+            </div>
+            
+            <div id="user-info">
+                <span>Bem-vindo, <strong id="username-display">Usuário</strong></span>
+                <select id="status-selector">
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                </select>
+                | <a href="index.html" id="logout-link">Sair</a>
+            </div>
+        </div>
+        
+        <div id="nav">
+            <a href="home.html" class="nav-link">Início</a>
+            <a href="perfil.html" class="nav-link">Perfil</a>
+            <a href="amigos.html" class="nav-link">Amigos</a>
+            <a href="comunidades.html" class="nav-link">Comunidades</a>
+            <a href="fotos.html" class="nav-link">Fotos</a>
+        </div>
+        
+        <div id="content">
+            <div id="sidebar">
+                <div class="box">
+                    <h2>Meus Amigos <span id="friends-count">(0)</span></h2>
+                    <div id="my-friends-list">
+                        <!-- Amigos serão carregados aqui pelo JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="main">
+                <div class="box">
+                    <h2>Adicionar Amigos</h2>
+                    <div class="search-friends">
+                        <input type="text" id="friend-search" placeholder="Buscar por nome...">
+                        <button id="search-button" class="login-button">Buscar</button>
+                    </div>
+                    
+                    <div id="search-results">
+                        <p class="no-friends">Digite um nome para buscar amigos</p>
+                    </div>
+                </div>
+                
+                <div class="box">
+                    <h2>Amigos sugeridos</h2>
+                    <div id="suggested-friends" class="friend-suggestions">
+                        <!-- Amigos sugeridos serão carregados aqui pelo JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="footer">
+            <p>orkut © 2004-2008 - <a href="sobre.html">Sobre o orkut</a> - <a href="seguranca.html">Centro de segurança</a> - <a href="privacidade.html">Privacidade</a> - <a href="termos.html">Termos</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Banco de dados de usuários fictícios
+        const allUsers = [
+            {
+                id: 1,
+                name: "Ana Silva",
+                avatar: "https://i.pravatar.cc/150?img=1",
+                location: "São Paulo, SP",
+                mutualFriends: 5,
+                online: true
+            },
+            {
+                id: 2,
+                name: "Carlos Oliveira",
+                avatar: "https://i.pravatar.cc/150?img=5",
+                location: "Rio de Janeiro, RJ",
+                mutualFriends: 2,
+                online: false
+            },
+            {
+                id: 3,
+                name: "Mariana Santos",
+                avatar: "https://i.pravatar.cc/150?img=11",
+                location: "Belo Horizonte, MG",
+                mutualFriends: 8,
+                online: true
+            },
+            {
+                id: 4,
+                name: "Pedro Costa",
+                avatar: "https://i.pravatar.cc/150?img=7",
+                location: "Porto Alegre, RS",
+                mutualFriends: 3,
+                online: false
+            },
+            {
+                id: 5,
+                name: "Juliana Pereira",
+                avatar: "https://i.pravatar.cc/150?img=8",
+                location: "Curitiba, PR",
+                mutualFriends: 7,
+                online: true
+            },
+            {
+                id: 6,
+                name: "Ricardo Almeida",
+                avatar: "https://i.pravatar.cc/150?img=9",
+                location: "Salvador, BA",
+                mutualFriends: 1,
+                online: false
+            },
+            {
+                id: 7,
+                name: "Fernanda Lima",
+                avatar: "https://i.pravatar.cc/150?img=10",
+                location: "Fortaleza, CE",
+                mutualFriends: 4,
+                online: true
+            },
+            {
+                id: 8,
+                name: "Gustavo Henrique",
+                avatar: "https://i.pravatar.cc/150?img=12",
+                location: "Recife, PE",
+                mutualFriends: 6,
+                online: false
+            }
+        ];
+
+        // Amigos iniciais do usuário (vazio para começar)
+        let myFriends = [];
+
+        // Elementos do DOM
+        const myFriendsList = document.getElementById('my-friends-list');
+        const suggestedFriendsDiv = document.getElementById('suggested-friends');
+        const searchResultsDiv = document.getElementById('search-results');
+        const friendSearchInput = document.getElementById('friend-search');
+        const searchButton = document.getElementById('search-button');
+        const friendsCount = document.getElementById('friends-count');
+
+        // Função para renderizar um card de amigo
+        function renderFriendCard(user, isFriend = false) {
+            const card = document.createElement('div');
+            card.className = 'friend-card';
+            card.innerHTML = `
+                <div class="friend-card-avatar">
+                    <img src="${user.avatar}" alt="${user.name}">
+                </div>
+                <div class="online-status ${user.online ? 'online' : 'offline'}">
+                    ${user.online ? 'Online agora' : 'Offline'}
+                </div>
+                <div class="friend-card-name">${user.name}</div>
+                <div class="friend-card-location">${user.location}</div>
+                <div class="friend-card-mutual">${user.mutualFriends} amigos em comum</div>
+                <button class="add-friend-button ${isFriend ? 'added' : ''}" 
+                        data-id="${user.id}">
+                    ${isFriend ? '✔ Amigo' : '+ Adicionar'}
+                </button>
+            `;
+            return card;
+        }
+
+        // Função para renderizar a lista de amigos
+        function renderFriendsLists() {
+            // Limpar listas
+            myFriendsList.innerHTML = '';
+            suggestedFriendsDiv.innerHTML = '';
+            
+            // Atualizar contador de amigos
+            friendsCount.textContent = `(${myFriends.length})`;
+            
+            // Renderizar meus amigos
+            if (myFriends.length === 0) {
+                myFriendsList.innerHTML = '<p class="no-friends">Você ainda não tem amigos adicionados</p>';
+            } else {
+                myFriends.forEach(friend => {
+                    myFriendsList.appendChild(renderFriendCard(friend, true));
+                });
+            }
+            
+            // Sugerir amigos que não estão na lista
+            const suggested = allUsers.filter(user => 
+                !myFriends.some(friend => friend.id === user.id))
+                .slice(0, 6); // Limitar a 6 sugestões
+            
+            if (suggested.length === 0) {
+                suggestedFriendsDiv.innerHTML = '<p class="no-friends">Nenhuma sugestão disponível</p>';
+            } else {
+                suggested.forEach(user => {
+                    suggestedFriendsDiv.appendChild(renderFriendCard(user));
+                });
+            }
+        }
+
+        // Função para buscar amigos
+        function searchFriends() {
+            const searchTerm = friendSearchInput.value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                searchResultsDiv.innerHTML = '<p class="no-friends">Digite um nome para buscar</p>';
+                return;
+            }
+            
+            const results = allUsers.filter(user => 
+                user.name.toLowerCase().includes(searchTerm) &&
+                !myFriends.some(friend => friend.id === user.id))
+                .slice(0, 10); // Limitar a 10 resultados
+            
+            searchResultsDiv.innerHTML = '';
+            
+            if (results.length === 0) {
+                searchResultsDiv.innerHTML = '<p class="no-friends">Nenhum amigo encontrado</p>';
+                return;
+            }
+            
+            const resultsContainer = document.createElement('div');
+            resultsContainer.className = 'friend-suggestions';
+            
+            results.forEach(user => {
+                resultsContainer.appendChild(renderFriendCard(user));
+            });
+            
+            searchResultsDiv.appendChild(resultsContainer);
+        }
+
+        // Função para adicionar/remover amigo
+        function toggleFriend(userId) {
+            const userIndex = myFriends.findIndex(friend => friend.id === userId);
+            
+            if (userIndex === -1) {
+                // Adicionar amigo
+                const userToAdd = allUsers.find(user => user.id === userId);
+                if (userToAdd) {
+                    myFriends.push(userToAdd);
+                    alert(`${userToAdd.name} foi adicionado aos seus amigos!`);
+                }
+            } else {
+                // Remover amigo
+                const removedFriend = myFriends[userIndex];
+                myFriends.splice(userIndex, 1);
+                alert(`${removedFriend.name} foi removido dos seus amigos.`);
+            }
+            
+            // Renderizar novamente as listas
+            renderFriendsLists();
+        }
+
+        // Event listeners
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('add-friend-button')) {
+                const userId = parseInt(e.target.getAttribute('data-id'));
+                toggleFriend(userId);
+            }
+        });
+
+        searchButton.addEventListener('click', searchFriends);
+        friendSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchFriends();
+            }
+        });
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adiciona 3 amigos aleatórios para exemplo
+            myFriends = [
+                allUsers[0], // Ana Silva
+                allUsers[2], // Mariana Santos
+                allUsers[4]  // Juliana Pereira
+            ];
+            
+            renderFriendsLists();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>orkut</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f3f3;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      
+      #container {
+        width: 980px;
+        margin: 20px auto;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      
+      #header {
+        background-color: #EDEFF4;
+        padding: 10px 20px;
+        border-bottom: 1px solid #D8DFEA;
+        height: 60px;
+      }
+      
+      #logo {
+        float: left;
+      }
+      
+      #logo img {
+        height: 50px;
+      }
+      
+      /* Área de login estilizada */
+      #login-box {
+        float: right;
+        background-color: white;
+        border: 1px solid #D8DFEA;
+        padding: 5px;
+        margin-top: 5px;
+        font-size: 11px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+      }
+      
+      #login-box table {
+        border-collapse: collapse;
+      }
+      
+      #login-box td {
+        padding: 2px;
+        font-size: 11px;
+      }
+      
+      #login-box input[type="text"],
+      #login-box input[type="password"] {
+        width: 120px;
+        border: 1px solid #BDC7D8;
+        padding: 3px;
+        font-size: 11px;
+      }
+      
+      #login-box button {
+        background-color: #5B74A8;
+        color: white;
+        border: none;
+        padding: 4px 10px;
+        font-weight: bold;
+        font-size: 11px;
+        border-radius: 2px;
+        cursor: pointer;
+      }
+      
+      #login-box button:hover {
+        background-color: #3B5998;
+      }
+      
+      #login-links {
+        font-size: 11px;
+        text-align: right;
+        margin-top: 3px;
+      }
+      
+      #login-links a {
+        color: #3B5998;
+        text-decoration: none;
+      }
+      
+      #login-links a:hover {
+        text-decoration: underline;
+      }
+      
+      /* Área do usuário logado */
+      #user-info {
+        float: right;
+        margin-top: 15px;
+        font-size: 12px;
+        background-color: white;
+        padding: 5px 10px;
+        border: 1px solid #D8DFEA;
+        border-radius: 3px;
+      }
+      
+      #user-info a {
+        color: #3B5998;
+        text-decoration: none;
+      }
+      
+      #user-info a:hover {
+        text-decoration: underline;
+      }
+      
+      #status-selector {
+        margin-left: 10px;
+        font-size: 11px;
+        padding: 2px;
+        border: 1px solid #BDC7D8;
+        border-radius: 2px;
+      }
+      
+      /* Barra de navegação */
+      #nav {
+        clear: both;
+        background-color: #3B5998;
+        padding: 5px 20px;
+        background-image: linear-gradient(to bottom, #6D84B4, #3B5998);
+      }
+      
+      #nav a {
+        color: white;
+        text-decoration: none;
+        margin-right: 15px;
+        font-weight: bold;
+        font-size: 13px;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+      }
+      
+      #nav a:hover {
+        text-decoration: underline;
+      }
+      
+      /* Conteúdo principal */
+      #content {
+        padding: 20px;
+        display: flex;
+      }
+      
+      #sidebar {
+        width: 200px;
+        margin-right: 20px;
+      }
+      
+      #main {
+        flex: 1;
+      }
+      
+      .box {
+        background-color: #F7F7F7;
+        border: 1px solid #D8DFEA;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 3px;
+      }
+      
+      .box h2 {
+        color: #3B5998;
+        font-size: 14px;
+        margin-top: 0;
+        border-bottom: 1px solid #D8DFEA;
+        padding-bottom: 5px;
+      }
+      
+      /* Perfil */
+      #profile {
+        text-align: center;
+      }
+      
+      #profile-pic {
+        width: 150px;
+        height: 150px;
+        border: 1px solid #ccc;
+        margin: 0 auto 10px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      
+      #profile-pic img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      
+      #profile-info {
+        margin-top: 10px;
+        text-align: left;
+      }
+      
+      #profile-info p {
+        margin: 5px 0;
+        font-size: 12px;
+      }
+      
+      /* Área de recados */
+      #scrapbook {
+        min-height: 300px;
+      }
+      
+      #messages {
+        list-style-type: none;
+        padding: 0;
+        max-height: 400px;
+        overflow-y: auto;
+        background-color: #fff;
+        border: 1px solid #D8DFEA;
+        border-radius: 3px;
+      }
+      
+      #messages li {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+      }
+      
+      #messages li:nth-child(odd) {
+        background-color: #f9f9f9;
+      }
+      
+      #message-form input[type="text"] {
+        width: 97%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 12px;
+      }
+      
+      #message-form button {
+        background-color: #5B74A8;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+      }
+      
+      #message-form button:hover {
+        background-color: #3B5998;
+      }
+      
+      /* Lista de amigos */
+      .friend-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      .friend-list li {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+      }
+      
+      .friend-list li:last-child {
+        border-bottom: none;
+      }
+      
+      .friend-avatar {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      
+      .friend-avatar img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      
+      /* Comunidades */
+      .community-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      .community-list li {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .community-list li:last-child {
+        border-bottom: none;
+      }
+      
+      /* Fotos */
+      .photo-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+      
+      .photo-thumb {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      
+      .photo-thumb img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      
+      /* Rodapé */
+      #footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 11px;
+        color: #777;
+        border-top: 1px solid #D8DFEA;
+        background-color: #F7F7F7;
+      }
+      
+      #footer a {
+        color: #3B5998;
+        text-decoration: none;
+      }
+      
+      #footer a:hover {
+        text-decoration: underline;
+      }
+      
+      /* Status online */
+      .online {
+        color: #4CAF50;
+        font-weight: bold;
+      }
+      
+      .offline {
+        color: #F44336;
+      }
+
+      /* Estilos para a página de edição de perfil */
+      #edit-profile-page {
+        padding: 20px;
+        display: none;
+      }
+
+      #profile-form table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      #profile-form td {
+        padding: 8px 5px;
+        vertical-align: top;
+        border-bottom: 1px solid #EDEFF4;
+      }
+
+      #profile-form tr:last-child td {
+        border-bottom: none;
+      }
+
+      #profile-form input[type="text"],
+      #profile-form textarea,
+      #profile-form select {
+        border: 1px solid #BDC7D8;
+        border-radius: 2px;
+        padding: 5px;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+      }
+
+      #profile-form textarea {
+        resize: vertical;
+      }
+
+      #profile-form strong {
+        color: #333;
+      }
+
+      #profile-pic-edit {
+        width: 150px;
+        height: 150px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      #profile-image-edit {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .form-buttons {
+        margin-top: 15px;
+        text-align: center;
+      }
+
+      .form-button {
+        background-color: #5B74A8;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+        margin: 0 5px;
+      }
+
+      .form-button.cancel {
+        background-color: #ccc;
+        color: #333;
+      }
+
+      .form-button:hover {
+        opacity: 0.9;
+      }
+
+      .form-note {
+        font-size: 11px;
+        color: #666;
+        margin-top: 5px;
+      }
+      
+      /* Botão de editar perfil */
+      .edit-profile-btn {
+        background-color: #5B74A8;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 11px;
+        margin-top: 10px;
+      }
+      
+      .edit-profile-btn:hover {
+        background-color: #3B5998;
+      }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuY_cq46q-tayogdHvVTWk-5KGA8DETC9bYA&s" alt="orkut">
+            </div>
+            
+            <!-- Área de login (visível quando não logado) -->
+            <div id="login-box" style="display: block;">
+                <form id="login-form">
+                    <table>
+                        <tr>
+                            <td><label for="login-email">E-mail:</label></td>
+                            <td><input type="text" id="login-email" placeholder="seu@email.com"></td>
+                            <td rowspan="2"><button type="submit">Login</button></td>
+                        </tr>
+                        <tr>
+                            <td><label for="login-password">Senha:</label></td>
+                            <td><input type="password" id="login-password" placeholder="••••••"></td>
+                        </tr>
+                    </table>
+                    <div id="login-links">
+                        <a href="#">Cadastre-se</a> | 
+                        <a href="#">Esqueceu a senha?</a>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Área do usuário logado (inicialmente oculta) -->
+            <div id="user-info" style="display: none;">
+                <span>Bem-vindo, <strong id="username-display"></strong></span>
+                <select id="status-selector">
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                </select>
+                | <a href="#" id="logout-link">Sair</a>
+            </div>
+        </div>
+        
+        <div id="nav">
+            <a href="index.html" class="nav-link" data-page="home">Início</a>
+            <a href="perfil.html" class="nav-link" data-page="profile">Perfil</a>
+            <a href="amigos.html" class="nav-link" data-page="friends">Amigos</a>
+            <a href="#" class="nav-link" data-page="communities">Comunidades</a>
+            <a href="fotos.html" class="nav-link" data-page="photos">Fotos</a>
+        </div>
+        
+        <!-- Conteúdo visível apenas quando logado -->
+        <div id="logged-content" style="display: none;">
+            <!-- Conteúdo principal (página inicial) -->
+            <div id="content" class="page-content" data-page="home">
+                <div id="sidebar">
+                    <div id="profile" class="box">
+                        <h2>Perfil</h2>
+                        <div id="profile-pic">
+                            <img id="profile-image" src="https://web.whatsapp.com/1f09dd8b-1c41-4e59-9b8b-a1b7b25335e2" alt="Foto do perfil">
+                        </div>
+                        <div id="profile-info">
+                            <p><strong>Nome:</strong> <span id="profile-name">Carregando...</span></p>
+                            <p><strong>Idade:</strong> <span id="profile-age">--</span></p>
+                            <p><strong>Localização:</strong> <span id="profile-location">--</span></p>
+                            <p><strong>Status:</strong> <span id="profile-status">--</span></p>
+                            <p><strong>Estado:</strong> <span id="profile-online-status" class="online">Online</span></p>
+                            <button id="edit-profile-btn" class="edit-profile-btn">Editar Perfil</button>
+                        </div>
+                    </div>
+                    
+                    <div class="box">
+                        <h2>Amigos <span id="friends-count">(5)</span></h2>
+                        <ul class="friend-list" id="friends-list">
+                            <!-- Preenchido por JavaScript -->
+                        </ul>
+                    </div>
+                    
+                    <div class="box">
+                        <h2>Comunidades <span id="communities-count">(3)</span></h2>
+                        <ul class="community-list" id="communities-list">
+                            <!-- Preenchido por JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+                
+                <div id="main">
+                    <div id="scrapbook" class="box">
+                        <h2>Recados</h2>
+                        <ul id="messages"></ul>
+                        <form id="message-form">
+                            <input id="message" type="text" placeholder="Deixe seu recado..." autocomplete="off" required>
+                            <button type="submit">Enviar</button>
+                        </form>
+                    </div>
+                    
+                    <div class="box">
+                        <h2>Fotos</h2>
+                        <div class="photo-grid">
+                            <div class="photo-thumb"><img src="https://gorafa.com.br/wp-content/uploads/2024/05/lago-moraine-banff-canada3-820x546-1.jpeg" alt="Foto 1"></div>
+                            <div class="photo-thumb"><img src="https://images.pexels.com/photos/1619317/pexels-photo-1619317.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Foto 2"></div>
+                            <div class="photo-thumb"><img src="https://media.istockphoto.com/id/485371557/pt/foto/crep%C3%BAsculo-em-ilha-spirit.jpg?s=170667a&w=0&k=20&c=sTW16RsM3SWrFQqxo6Pro0dFuS23CCIgaUDlLW0D2hE=" alt="Foto 3"></div>
+                            <div class="photo-thumb"><img src="https://wallpapers.com/images/featured/imagens-de-paisagens-a3hr6gk3xfx36dyg.jpg" alt="Foto 4"></div>
+                            <div class="photo-thumb"><img src="https://static.nationalgeographicbrasil.com/files/styles/image_3200/public/maravillas-da-amazonia.jpeg.webp?w=1600&h=900" alt="Foto 5"></div>
+                            <div class="photo-thumb"><img src="https://blog.emania.com.br/wp-content/uploads/2015/12/Papel-de-Parede-de-Paisagem.jpg" alt="Foto 6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página de Perfil -->
+            <div id="profile-page" class="page-content" data-page="profile">
+                <div class="box">
+                    <h2>Perfil</h2>
+                    <div id="profile-view">
+                        <!-- Conteúdo do perfil será preenchido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página de Edição de Perfil -->
+            <div id="edit-profile-page" class="page-content" data-page="edit-profile">
+                <div class="box">
+                    <h2>Editar Perfil</h2>
+                    
+                    <form id="profile-form">
+                        <table width="100%" cellpadding="5" cellspacing="0">
+                            <tr>
+                                <td width="150" valign="top"><strong>Foto do perfil:</strong></td>
+                                <td>
+                                    <div id="profile-pic-edit">
+                                        <img id="profile-image-edit" src="https://web.whatsapp.com/1f09dd8b-1c41-4e59-9b8b-a1b7b25335e2" alt="Foto do perfil">
+                                    </div>
+                                    <input type="file" id="profile-image-upload" accept="image/*" style="font-size: 11px;">
+                                    <p class="form-note">Tamanho máximo: 100KB. Formatos: JPG, GIF ou PNG.</p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td valign="top"><strong>Nome completo:</strong></td>
+                                <td><input type="text" id="edit-name" style="width: 300px;"></td>
+                            </tr>
+                            
+                            <tr>
+                                <td valign="top"><strong>Sexo:</strong></td>
+                                <td>
+                                    <select id="edit-gender">
+                                        <option value="male">Masculino</option>
+                                        <option value="female">Feminino</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td valign="top"><strong>Data de nascimento:</strong></td>
+                                <td>
+                                    <select id="edit-day">
+                                        <option value="">Dia</option>
+                                    </select>
+                                    <select id="edit-month">
+                                        <option value="">Mês</option>
+                                        <option value="1">Janeiro</option>
+                                        <option value="2">Fevereiro</option>
+                                        <option value="3">Março</option>
+                                        <option value="4">Abril</option>
+                                        <option value="5">Maio</option>
+                                        <option value="6">Junho</option>
+                                        <option value="7">Julho</option>
+                                        <option value="8">Agosto</option>
+                                        <option value="9">Setembro</option>
+                                        <option value="10">Outubro</option>
+                                        <option value="11">Novembro</option>
+                                        <option value="12">Dezembro</option>
+                                    </select>
+                                    <select id="edit-year">
+                                        <option value="">Ano</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td valign="top"><strong>Localização:</strong></td>
+                                <td>
+                                    <select id="edit-country" style="margin-bottom: 5px; width: 300px;">
+                                        <option value="BR">Brasil</option>
+                                        <option value="US">Estados Unidos</option>
+                                    </select>
+                                    <input type="text" id="edit-city" placeholder="Cidade" style="width: 200px; margin-right: 5px;">
+                                    <select id="edit-state" style="width: 85px;">
+                                        <option value="">Estado</option>
+                                        <option value="SP">SP</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td valign="top"><strong>Estado civil:</strong></td>
+                                <td>
+                                    <select id="edit-status" style="width: 300px;">
+                                        <option value="single">Solteiro(a)</option>
+                                        <option value="married">Casado(a)</option>
+                                        <option value="relationship">Em um relacionamento</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td valign="top"><strong>Sobre mim:</strong></td>
+                                <td>
+                                    <textarea id="edit-about" rows="5" style="width: 300px;"></textarea>
+                                    <p class="form-note">Conte um pouco sobre você, seus interesses e hobbies.</p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td valign="top"><strong>Interesses:</strong></td>
+                                <td>
+                                    <input type="text" id="edit-interests" style="width: 300px;" placeholder="Ex: música, esportes, viagens">
+                                    <p class="form-note">Separe com vírgulas os assuntos que você gosta.</p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="2" class="form-buttons">
+                                    <button type="submit" class="form-button">Salvar Alterações</button>
+                                    <button type="button" id="cancel-edit" class="form-button cancel">Cancelar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div id="footer">
+            <p>orkut © 2004-2008 - <a href="sobre.html">Sobre o orkut</a> - <a href="seguranca.html">Centro de segurança</a> - <a href="privacidade.html">Privacidade</a> - <a href="termos.html">Termos</a></p>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Banco de dados de usuários
+        const users = {
+            "teixeiraigor525@gmail.com": {
+                password: "senha123",
+                name: "Igor Teixeira Souza",
+                age: "17 anos",
+                location: "Mogi das Cruzes, SP",
+                status: "Casado",
+                avatar: "https://www.inspirehome.com.br/media/catalog/product/cache/6c29bd58154b9ef7ac5bf02eec8053fa/p/o/poste-de-luz-aluminium-externo-232x32x32cm-aluminio-e-vidro---incolustre-19000-1p.webp",
+                gender: "male",
+                birthday: { day: "15", month: "5", year: "2007" },
+                about: "Amo programação e jogos online!",
+                interests: "programação, jogos, música"
+            },
+            "lucasgomes123@gmail.com": {
+                password: "senha123",
+                name: "Lucas Gomes",
+                age: "17 anos",
+                location: "Mogi das Cruzes, SP",
+                status: "Solteiro(a)",
+                avatar: "https://pbs.twimg.com/media/Eljxjs4XgAAIeSg.png",
+                gender: "male",
+                birthday: { day: "20", month: "8", year: "2006" },
+                about: "Fã de futebol e tecnologia!",
+                interests: "futebol, tecnologia, carros"
+            }
+        };
+
+        // Dados de amigos e comunidades
+        const friendsData = [
+            { name: "Eduardo Domiciano", avatar: "https://pbs.twimg.com/media/EoBvT90XEAIPXK2.jpg", online: true },
+            { name: "Neslon Correa", avatar: "https://i.ibb.co/ZSL1S7G/mundial-de-clubes.png", online: false }
+        ];
+
+        const communitiesData = [
+            "Fãs de Música Rock",
+            "Programadores Web"
+        ];
+
+        // Elementos do DOM
+        const loginForm = document.getElementById('login-form');
+        const loginBox = document.getElementById('login-box');
+        const userInfo = document.getElementById('user-info');
+        const loggedContent = document.getElementById('logged-content');
+        const usernameDisplay = document.getElementById('username-display');
+        const logoutLink = document.getElementById('logout-link');
+        const statusSelector = document.getElementById('status-selector');
+        const profileOnlineStatus = document.getElementById('profile-online-status');
+        
+        // Elementos do perfil
+        const profileName = document.getElementById('profile-name');
+        const profileAge = document.getElementById('profile-age');
+        const profileLocation = document.getElementById('profile-location');
+        const profileStatus = document.getElementById('profile-status');
+        const profileImage = document.getElementById('profile-image');
+        const friendsList = document.getElementById('friends-list');
+        const communitiesList = document.getElementById('communities-list');
+        const friendsCount = document.getElementById('friends-count');
+        const communitiesCount = document.getElementById('communities-count');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        const profileView = document.getElementById('profile-view');
+
+        // Elementos do chat
+        const socket = io();
+        const messages = document.getElementById('messages');
+        const messageForm = document.getElementById('message-form');
+        const messageInput = document.getElementById('message');
+
+        // Elementos da edição de perfil
+        const editProfilePage = document.getElementById('edit-profile-page');
+        const profilePage = document.getElementById('profile-page');
+        const profileForm = document.getElementById('profile-form');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+        const profileImageEdit = document.getElementById('profile-image-edit');
+        const profileImageUpload = document.getElementById('profile-image-upload');
+        const editName = document.getElementById('edit-name');
+        const editGender = document.getElementById('edit-gender');
+        const editDay = document.getElementById('edit-day');
+        const editMonth = document.getElementById('edit-month');
+        const editYear = document.getElementById('edit-year');
+        const editCountry = document.getElementById('edit-country');
+        const editCity = document.getElementById('edit-city');
+        const editState = document.getElementById('edit-state');
+        const editStatus = document.getElementById('edit-status');
+        const editAbout = document.getElementById('edit-about');
+        const editInterests = document.getElementById('edit-interests');
+
+        // Navegação
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageContents = document.querySelectorAll('.page-content');
+
+        // Variável para armazenar usuário atual
+        let currentUser = null;
+
+        // Preencher dropdown de dias (1-31)
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            editDay.appendChild(option);
+        }
+
+        // Preencher dropdown de anos (últimos 100 anos)
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= currentYear - 100; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            editYear.appendChild(option);
+        }
+
+        // Mostrar página específica
+        function showPage(pageId) {
+            pageContents.forEach(page => {
+                page.style.display = page.getAttribute('data-page') === pageId ? 'block' : 'none';
+            });
+            
+            if (pageId === 'home') {
+                document.getElementById('content').style.display = 'flex';
+            }
+            
+            // Se for a página de perfil, carregar os dados
+            if (pageId === 'profile') {
+                loadProfileView();
+            }
+        }
+
+        // Carregar visualização do perfil
+        function loadProfileView() {
+            if (!currentUser) return;
+            
+            profileView.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="width: 150px; height: 150px; border: 1px solid #ccc; margin: 0 auto 10px; overflow: hidden;">
+                        <img src="${currentUser.avatar}" alt="Foto do perfil" style="max-width: 100%; max-height: 100%;">
+                    </div>
+                    <h3>${currentUser.name}</h3>
+                </div>
+                <div style="margin-top: 20px;">
+                    <p><strong>Idade:</strong> ${currentUser.age}</p>
+                    <p><strong>Localização:</strong> ${currentUser.location}</p>
+                    <p><strong>Estado civil:</strong> ${currentUser.status}</p>
+                    <p><strong>Sobre mim:</strong> ${currentUser.about || 'Não informado'}</p>
+                    <p><strong>Interesses:</strong> ${currentUser.interests || 'Não informado'}</p>
+                </div>
+            `;
+            
+            // Mostrar botão de edição apenas se for o próprio perfil
+            const urlParams = new URLSearchParams(window.location.search);
+            const profileEmail = urlParams.get('email');
+            
+            if (profileEmail === currentUser.email) {
+                profileView.innerHTML += `
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button id="edit-this-profile" class="edit-profile-btn">Editar Meu Perfil</button>
+                    </div>
+                `;
+                
+                document.getElementById('edit-this-profile').addEventListener('click', function() {
+                    showEditProfile();
+                });
+            }
+        }
+
+        // Mostrar formulário de edição de perfil
+        function showEditProfile() {
+            if (!currentUser) return;
+            
+            // Preencher formulário com dados atuais
+            editName.value = currentUser.name;
+            profileImageEdit.src = currentUser.avatar;
+            editGender.value = currentUser.gender;
+            
+            if (currentUser.birthday) {
+                editDay.value = currentUser.birthday.day;
+                editMonth.value = currentUser.birthday.month;
+                editYear.value = currentUser.birthday.year;
+            }
+            
+            if (currentUser.location) {
+                const [city, state] = currentUser.location.split(', ');
+                editCity.value = city;
+                editState.value = state.trim();
+            }
+            
+            editStatus.value = currentUser.status.toLowerCase().replace('(a)', '');
+            editAbout.value = currentUser.about || '';
+            editInterests.value = currentUser.interests || '';
+            
+            showPage('edit-profile');
+        }
+
+        // Preencher lista de amigos
+        function populateFriendsList() {
+            friendsList.innerHTML = '';
+            friendsData.forEach(friend => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="friend-avatar">
+                        <img src="${friend.avatar}" alt="${friend.name}">
+                    </div>
+                    <span class="${friend.online ? 'online' : 'offline'}">${friend.name}</span>
+                `;
+                friendsList.appendChild(li);
+            });
+            friendsCount.textContent = `(${friendsData.length})`;
+        }
+
+        // Preencher lista de comunidades
+        function populateCommunitiesList() {
+            communitiesList.innerHTML = '';
+            communitiesData.forEach(community => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#">${community}</a>`;
+                communitiesList.appendChild(li);
+            });
+            communitiesCount.textContent = `(${communitiesData.length})`;
+        }
+
+        // Manipulador de login
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            if (users[email] && users[email].password === password) {
+                // Login bem-sucedido
+                currentUser = users[email];
+                currentUser.email = email;
+                
+                loginBox.style.display = 'none';
+                userInfo.style.display = 'block';
+                loggedContent.style.display = 'block';
+                
+                // Preencher informações do usuário
+                usernameDisplay.textContent = currentUser.name;
+                profileName.textContent = currentUser.name;
+                profileAge.textContent = currentUser.age;
+                profileLocation.textContent = currentUser.location;
+                profileStatus.textContent = currentUser.status;
+                profileImage.src = currentUser.avatar;
+                
+                // Preencher listas
+                populateFriendsList();
+                populateCommunitiesList();
+                
+                // Notificar servidor sobre login
+                socket.emit('user login', { 
+                    email: email,
+                    name: currentUser.name,
+                    status: 'online'
+                });
+                
+                // Mostrar página inicial
+                showPage('home');
+            } else {
+                alert('E-mail ou senha incorretos!');
+            }
+        });
+
+        // Manipulador de logout
+        logoutLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            // Notificar servidor sobre logout
+            if (currentUser) {
+                socket.emit('user logout', { 
+                    email: currentUser.email,
+                    name: currentUser.name
+                });
+            }
+            
+            loginBox.style.display = 'block';
+            userInfo.style.display = 'none';
+            loggedContent.style.display = 'none';
+            
+            // Limpar campos
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+            
+            currentUser = null;
+        });
+
+        // Botão de editar perfil na sidebar
+        editProfileBtn.addEventListener('click', function() {
+            showEditProfile();
+        });
+
+        // Navegação entre páginas
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.getAttribute('data-page');
+                showPage(page || 'home');
+            });
+        });
+
+        // Manipulador para upload de imagem
+        profileImageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    profileImageEdit.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Manipulador do formulário de edição
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (currentUser) {
+                // Atualizar dados do usuário
+                const oldName = currentUser.name;
+                currentUser.name = editName.value;
+                currentUser.avatar = profileImageEdit.src;
+                currentUser.gender = editGender.value;
+                
+                // Data de nascimento
+                if (editDay.value && editMonth.value && editYear.value) {
+                    currentUser.birthday = {
+                        day: editDay.value,
+                        month: editMonth.value,
+                        year: editYear.value
+                    };
+                    
+                    // Calcular idade
+                    const birthDate = new Date(editYear.value, editMonth.value - 1, editDay.value);
+                    const ageDifMs = Date.now() - birthDate.getTime();
+                    const ageDate = new Date(ageDifMs);
+                    currentUser.age = Math.abs(ageDate.getUTCFullYear() - 1970) + ' anos';
+                }
+                
+                // Localização
+                currentUser.location = `${editCity.value}, ${editState.value}`;
+                
+                // Estado civil
+                currentUser.status = editStatus.value === 'male' ? 'Solteiro' : 'Solteira';
+                if (editStatus.value === 'married') currentUser.status = 'Casado(a)';
+                if (editStatus.value === 'relationship') currentUser.status = 'Em um relacionamento';
+                
+                // Outros campos
+                currentUser.about = editAbout.value;
+                currentUser.interests = editInterests.value;
+                
+                // Atualizar exibição do perfil
+                usernameDisplay.textContent = currentUser.name;
+                profileName.textContent = currentUser.name;
+                profileImage.src = currentUser.avatar;
+                profileAge.textContent = currentUser.age;
+                profileLocation.textContent = currentUser.location;
+                profileStatus.textContent = currentUser.status;
+                
+                // Notificar servidor sobre atualização
+                socket.emit('profile update', {
+                    email: currentUser.email,
+                    oldName: oldName,
+                    newName: currentUser.name,
+                    avatar: currentUser.avatar,
+                    status: currentUser.status,
+                    location: currentUser.location
+                });
+                
+                // Voltar para a página de perfil
+                showPage('profile');
+                
+                alert('Perfil atualizado com sucesso!');
+            }
+        });
+
+        // Cancelar edição
+        cancelEditBtn.addEventListener('click', function() {
+            if (confirm('Deseja descartar as alterações?')) {
+                showPage('profile');
+            }
+        });
+
+        // Receber atualizações de perfil de outros usuários
+        socket.on('profile updated', function(data) {
+            // Atualizar mensagens existentes
+            const messageItems = document.querySelectorAll('#messages li');
+            messageItems.forEach(item => {
+                const nameElement = item.querySelector('strong');
+                if (nameElement.textContent.startsWith(data.oldName + ':')) {
+                    nameElement.textContent = data.newName + ':';
+                    item.querySelector('img').src = data.avatar;
+                }
+            });
+            
+            // Atualizar lista de amigos
+            const friends = document.querySelectorAll('.friend-list li span');
+            friends.forEach(friend => {
+                if (friend.textContent === data.oldName) {
+                    friend.textContent = data.newName;
+                    friend.previousElementChild.querySelector('img').src = data.avatar;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

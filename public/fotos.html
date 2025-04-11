@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotos - orkut</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-image: url('https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/bg.gif');
+            background-repeat: repeat;
+        }
+        
+        #container {
+            width: 980px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        #header {
+            background-color: #EDEFF4;
+            padding: 10px 20px;
+            border-bottom: 1px solid #D8DFEA;
+            height: 60px;
+        }
+        
+        #logo {
+            float: left;
+        }
+        
+        #logo img {
+            height: 50px;
+        }
+        
+        #user-info {
+            float: right;
+            margin-top: 15px;
+            font-size: 12px;
+            background-color: white;
+            padding: 5px 10px;
+            border: 1px solid #D8DFEA;
+            border-radius: 3px;
+        }
+        
+        #nav {
+            clear: both;
+            background-color: #3B5998;
+            padding: 5px 20px;
+            background-image: linear-gradient(to bottom, #6D84B4, #3B5998);
+        }
+        
+        #nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 13px;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+        
+        #nav a:hover {
+            text-decoration: underline;
+        }
+        
+        #content {
+            padding: 20px;
+        }
+        
+        .box {
+            background-color: #F7F7F7;
+            border: 1px solid #D8DFEA;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 3px;
+        }
+        
+        .box h2 {
+            color: #3B5998;
+            font-size: 14px;
+            margin-top: 0;
+            border-bottom: 1px solid #D8DFEA;
+            padding-bottom: 5px;
+        }
+        
+        .photo-post {
+            background-color: white;
+            border: 1px solid #D8DFEA;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 3px;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 1px solid #BDC7D8;
+            object-fit: cover;
+        }
+        
+        .post-user {
+            font-weight: bold;
+            color: #3B5998;
+        }
+        
+        .post-time {
+            font-size: 11px;
+            color: #666;
+            margin-left: 10px;
+        }
+        
+        .post-photo {
+            max-width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        .post-description {
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            font-size: 11px;
+            color: #3B5998;
+        }
+        
+        .post-actions a {
+            color: #3B5998;
+            text-decoration: none;
+        }
+        
+        .post-actions a:hover {
+            text-decoration: underline;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .photo-thumb {
+            border: 1px solid #D8DFEA;
+            background-color: white;
+            padding: 5px;
+            text-align: center;
+        }
+        
+        .photo-thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .photo-thumb p {
+            font-size: 11px;
+            margin: 5px 0 0;
+            color: #666;
+        }
+        
+        #footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 11px;
+            color: #777;
+            border-top: 1px solid #D8DFEA;
+            background-color: #F7F7F7;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">
+                <img src="https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/logo.gif" alt="orkut">
+            </div>
+            
+            <div id="user-info">
+                <span>Bem-vindo, <strong id="username-display">Fulano</strong></span>
+                <select id="status-selector">
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                </select>
+                | <a href="index.html" id="logout-link">Sair</a>
+            </div>
+        </div>
+        
+        <div id="nav">
+            <a href="index.html" class="nav-link" data-page="home">Início</a>
+            <a href="perfil.html" class="nav-link" data-page="profile">Perfil</a>
+            <a href="amigos.html" class="nav-link" data-page="friends">Amigos</a>
+            <a href="comunidades.html" class="nav-link" data-page="communities">Comunidades</a>
+            <a href="fotos.html" class="nav-link" data-page="photos">Fotos</a>
+        </div>
+        
+        <div id="content">
+            <div class="box">
+                <h2>Fotos dos meus amigos</h2>
+                
+                <!-- Post 1 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=1" class="post-avatar" alt="Ana">
+                        <div>
+                            <span class="post-user">Ana Silva</span>
+                            <span class="post-time">Hoje, 14:30</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?beach" class="post-photo" alt="Praia">
+                    <p class="post-description">Final de semana na praia! Melhor forma de recarregar as energias 🏖️ #verão #praia</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 2 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=5" class="post-avatar" alt="Carlos">
+                        <div>
+                            <span class="post-user">Carlos Oliveira</span>
+                            <span class="post-time">Ontem, 20:15</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?concert" class="post-photo" alt="Show">
+                    <p class="post-description">No show do meu artista favorito! Que experiência incrível! 🎶 #musica #show</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 3 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=11" class="post-avatar" alt="Mariana">
+                        <div>
+                            <span class="post-user">Mariana Santos</span>
+                            <span class="post-time">Ontem, 18:45</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?food" class="post-photo" alt="Comida">
+                    <p class="post-description">Jantar especial que preparei hoje! Receita da vovó ❤️ #culinária #receitas</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 4 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=7" class="post-avatar" alt="Pedro">
+                        <div>
+                            <span class="post-user">Pedro Costa</span>
+                            <span class="post-time">Ontem, 12:30</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?hiking" class="post-photo" alt="Trilha">
+                    <p class="post-description">Finalmente fiz essa trilha que tanto queria! A vista valeu todo o esforço 🌄 #natureza #aventura</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 5 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=8" class="post-avatar" alt="Juliana">
+                        <div>
+                            <span class="post-user">Juliana Pereira</span>
+                            <span class="post-time">Ontem, 09:20</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?book" class="post-photo" alt="Livro">
+                    <p class="post-description">Terminei mais um livro! Indico muito essa leitura 📚 #livros #leitura</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 6 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=9" class="post-avatar" alt="Ricardo">
+                        <div>
+                            <span class="post-user">Ricardo Almeida</span>
+                            <span class="post-time">2 dias atrás, 22:10</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?car" class="post-photo" alt="Carro">
+                    <p class="post-description">Consegui meu primeiro carro! Tanto esforço valeu a pena 🚗 #conquista</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 7 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=10" class="post-avatar" alt="Fernanda">
+                        <div>
+                            <span class="post-user">Fernanda Lima</span>
+                            <span class="post-time">2 dias atrás, 19:45</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?pet" class="post-photo" alt="Pet">
+                    <p class="post-description">Meu bebê fazendo pose para foto! Como não amar? 🐶 #pet #amor</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 8 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=12" class="post-avatar" alt="Gustavo">
+                        <div>
+                            <span class="post-user">Gustavo Henrique</span>
+                            <span class="post-time">3 dias atrás, 16:30</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?basketball" class="post-photo" alt="Basquete">
+                    <p class="post-description">Depois de muito treino, finalmente acertei essa cesta! 🏀 #esporte #basquete</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 9 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=13" class="post-avatar" alt="Patricia">
+                        <div>
+                            <span class="post-user">Patricia Souza</span>
+                            <span class="post-time">3 dias atrás, 14:15</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?art" class="post-photo" alt="Arte">
+                    <p class="post-description">Minha nova pintura! O que acharam? 🎨 #arte #pintura</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 10 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=14" class="post-avatar" alt="Lucas">
+                        <div>
+                            <span class="post-user">Lucas Gomes</span>
+                            <span class="post-time">4 dias atrás, 21:00</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?travel" class="post-photo" alt="Viagem">
+                    <p class="post-description">Chegamos! Primeiro dia de viagem e já amando esse lugar ✈️ #viagem #ferias</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 11 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=15" class="post-avatar" alt="Camila">
+                        <div>
+                            <span class="post-user">Camila Ribeiro</span>
+                            <span class="post-time">4 dias atrás, 17:30</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?birthday" class="post-photo" alt="Aniversário">
+                    <p class="post-description">Comemorando meu aniversário com as pessoas que amo! Obrigada a todos ❤️ #aniversário #família</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 12 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=16" class="post-avatar" alt="Rafael">
+                        <div>
+                            <span class="post-user">Rafael Martins</span>
+                            <span class="post-time">5 dias atrás, 13:45</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?work" class="post-photo" alt="Trabalho">
+                    <p class="post-description">Novo projeto no trabalho! Ansioso para mostrar os resultados 💼 #trabalho #projeto</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 13 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=17" class="post-avatar" alt="Isabela">
+                        <div>
+                            <span class="post-user">Isabela Costa</span>
+                            <span class="post-time">5 dias atrás, 11:20</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?yoga" class="post-photo" alt="Yoga">
+                    <p class="post-description">Comecei a praticar yoga e estou amando! Paz interior 🧘‍♀️ #yoga #bemestar</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 14 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=18" class="post-avatar" alt="Diego">
+                        <div>
+                            <span class="post-user">Diego Oliveira</span>
+                            <span class="post-time">6 dias atrás, 20:00</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?concert" class="post-photo" alt="Show">
+                    <p class="post-description">Noite incrível no show da banda! Setlist perfeita 🎸 #musica #rock</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+                
+                <!-- Post 15 -->
+                <div class="photo-post">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/150?img=19" class="post-avatar" alt="Tatiane">
+                        <div>
+                            <span class="post-user">Tatiane Alves</span>
+                            <span class="post-time">6 dias atrás, 15:10</span>
+                        </div>
+                    </div>
+                    <img src="https://source.unsplash.com/random/600x400?study" class="post-photo" alt="Estudo">
+                    <p class="post-description">Material de estudo organizado para a semana! Foco nos objetivos 📚 #estudos #faculdade</p>
+                    <div class="post-actions">
+                        <a href="#">Curtir</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartilhar</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box">
+                <h2>Minhas fotos</h2>
+                <div class="photo-grid">
+                    <div class="photo-thumb">
+                        <img src="https://source.unsplash.com/random/200x200?party" alt="Festa">
+                        <p>Festa de aniversário</p>
+                    </div>
+                    <div class="photo-thumb">
+                        <img src="https://source.unsplash.com/random/200x200?family" alt="Família">
+                        <p>Encontro familiar</p>
+                    </div>
+                    <div class="photo-thumb">
+                        <img src="https://source.unsplash.com/random/200x200?graduation" alt="Formatura">
+                        <p>Formatura</p>
+                    </div>
+                    <div class="photo-thumb">
+                        <img src="https://source.unsplash.com/random/200x200?trip" alt="Viagem">
+                        <p>Viagem ano passado</p>
+                    </div>
+                    <div class="photo-thumb">
+                        <img src="https://source.unsplash.com/random/200x200?friends" alt="Amigos">
+                        <p>Amigos</p>
+                    </div>
+                    <div class="photo-thumb">
+                        <img src="https://source.unsplash.com/random/200x200?pet" alt="Pet">
+                        <p>Meu pet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="footer">
+            <p>orkut © 2004-2008 - <a href="sobre.html">Sobre o orkut</a> - <a href="seguranca.html">Centro de segurança</a> - <a href="privacidade.html">Privacidade</a> - <a href="termos.html">Termos</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Simula um usuário logado
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = {
+                name: "Fulano",
+                avatar: "https://i.pravatar.cc/150?img=3"
+            };
+            
+            document.getElementById('username-display').textContent = currentUser.name;
+            
+            // Destacar a página atual na navbar
+            document.querySelectorAll('#nav a').forEach(link => {
+                if (link.getAttribute('href') === 'fotos.html') {
+                    link.style.fontWeight = 'bold';
+                    link.style.textDecoration = 'underline';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

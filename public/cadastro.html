@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - orkut</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f3f3;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        background-image: url('https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/bg.gif');
+        background-repeat: repeat;
+      }
+      
+      #signup-container {
+        width: 450px;
+        margin: 50px auto;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding: 20px;
+      }
+      
+      #orkut-logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      #orkut-logo img {
+        height: 60px;
+      }
+      
+      .signup-title {
+        color: #3B5998;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #D8DFEA;
+        padding-bottom: 5px;
+      }
+      
+      .signup-form table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      
+      .signup-form td {
+        padding: 5px 0;
+        vertical-align: middle;
+      }
+      
+      .signup-form label {
+        font-size: 11px;
+        color: #666;
+      }
+      
+      .signup-form input[type="text"],
+      .signup-form input[type="password"],
+      .signup-form input[type="email"],
+      .signup-form select {
+        width: 100%;
+        border: 1px solid #BDC7D8;
+        border-radius: 2px;
+        padding: 5px;
+        font-size: 12px;
+      }
+      
+      .signup-button {
+        background-color: #5B74A8;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+      }
+      
+      .signup-button:hover {
+        background-color: #3B5998;
+      }
+      
+      .signup-links {
+        font-size: 11px;
+        margin-top: 10px;
+        text-align: center;
+      }
+      
+      .signup-links a {
+        color: #3B5998;
+        text-decoration: none;
+      }
+      
+      .signup-links a:hover {
+        text-decoration: underline;
+      }
+      
+      .language-selector {
+        font-size: 11px;
+        margin-top: 20px;
+        text-align: center;
+      }
+      
+      .language-selector a {
+        color: #3B5998;
+        text-decoration: none;
+        margin: 0 5px;
+      }
+      
+      .language-selector a:hover {
+        text-decoration: underline;
+      }
+      
+      .required-field::after {
+        content: " *";
+        color: red;
+      }
+      
+      .signup-note {
+        font-size: 11px;
+        color: #666;
+        margin-top: 5px;
+      }
+      
+      .birthday-field {
+        display: flex;
+        gap: 5px;
+      }
+      
+      .birthday-field select {
+        flex: 1;
+      }
+    </style>
+</head>
+<body>
+    <div id="signup-container">
+        <div id="orkut-logo">
+            <img src="https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/logo.gif" alt="orkut">
+        </div>
+        
+        <div class="signup-title">Crie sua conta no orkut</div>
+        
+        <form class="signup-form" id="signup-form">
+            <table>
+                <tr>
+                    <td width="120"><label for="signup-name" class="required-field">Nome:</label></td>
+                    <td><input type="text" id="signup-name" placeholder="Seu nome completo" required></td>
+                </tr>
+                <tr>
+                    <td><label for="signup-email" class="required-field">E-mail:</label></td>
+                    <td><input type="email" id="signup-email" placeholder="seu@email.com" required></td>
+                </tr>
+                <tr>
+                    <td><label for="signup-password" class="required-field">Senha:</label></td>
+                    <td><input type="password" id="signup-password" placeholder="••••••" required></td>
+                </tr>
+                <tr>
+                    <td><label for="signup-confirm-password" class="required-field">Confirmar senha:</label></td>
+                    <td><input type="password" id="signup-confirm-password" placeholder="••••••" required></td>
+                </tr>
+                <tr>
+                    <td><label for="signup-gender" class="required-field">Sexo:</label></td>
+                    <td>
+                        <select id="signup-gender" required>
+                            <option value="">Selecione</option>
+                            <option value="male">Masculino</option>
+                            <option value="female">Feminino</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="signup-birthday" class="required-field">Data de Nascimento:</label></td>
+                    <td>
+                        <div class="birthday-field">
+                            <select id="signup-day" required>
+                                <option value="">Dia</option>
+                                <!-- Dias serão preenchidos por JavaScript -->
+                            </select>
+                            <select id="signup-month" required>
+                                <option value="">Mês</option>
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                            <select id="signup-year" required>
+                                <option value="">Ano</option>
+                                <!-- Anos serão preenchidos por JavaScript -->
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="signup-country">País:</label></td>
+                    <td>
+                        <select id="signup-country">
+                            <option value="BR">Brasil</option>
+                            <option value="US">Estados Unidos</option>
+                            <option value="PT">Portugal</option>
+                            <option value="ES">Espanha</option>
+                            <option value="FR">França</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="signup-city">Cidade:</label></td>
+                    <td><input type="text" id="signup-city" placeholder="Sua cidade"></td>
+                </tr>
+                <tr>
+                    <td><label for="signup-state">Estado:</label></td>
+                    <td><input type="text" id="signup-state" placeholder="Seu estado" style="width: 50px;"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <div class="signup-note">Campos marcados com * são obrigatórios</div>
+                        <button type="submit" class="signup-button">Criar conta</button>
+                        <div class="signup-links">
+                            <a href="index.html">Voltar para o login</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+        <div class="language-selector">
+            <span>Idioma: </span>
+            <a href="#" class="language-option" data-lang="pt">Português</a>
+            <a href="#" class="language-option" data-lang="en">English</a>
+            <a href="#" class="language-option" data-lang="es">Español</a>
+        </div>
+    </div>
+
+    <script>
+        // Preencher dropdown de dias (1-31)
+        const daySelect = document.getElementById('signup-day');
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            daySelect.appendChild(option);
+        }
+
+        // Preencher dropdown de anos (últimos 100 anos)
+        const yearSelect = document.getElementById('signup-year');
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= currentYear - 100; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+
+        // Funções para gerenciar usuários
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('orkutUsers')) || {};
+        }
+
+        function saveUser(email, userData) {
+            const users = getUsers();
+            users[email] = userData;
+            localStorage.setItem('orkutUsers', JSON.stringify(users));
+        }
+
+        // Calcular idade
+        function calculateAge(year, month, day) {
+            const birthDate = new Date(year, month - 1, day);
+            const ageDiff = Date.now() - birthDate.getTime();
+            const ageDate = new Date(ageDiff);
+            return Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
+
+        // Validação do formulário
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Obter valores dos campos
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim().toLowerCase();
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            const gender = document.getElementById('signup-gender').value;
+            const day = document.getElementById('signup-day').value;
+            const month = document.getElementById('signup-month').value;
+            const year = document.getElementById('signup-year').value;
+            const city = document.getElementById('signup-city').value.trim();
+            const state = document.getElementById('signup-state').value.trim();
+            
+            // Validar senhas
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+            
+            // Validar data de nascimento
+            if (!day || !month || !year) {
+                alert('Por favor, preencha sua data de nascimento completa.');
+                return;
+            }
+            
+            // Calcular idade
+            const age = calculateAge(year, month, day);
+            
+            if (age < 13) {
+                alert('Você deve ter pelo menos 13 anos para se cadastrar no orkut.');
+                return;
+            }
+            
+            // Verificar se usuário já existe
+            const users = getUsers();
+            if (users[email]) {
+                alert('Este e-mail já está cadastrado!');
+                return;
+            }
+            
+            // Criar objeto do usuário
+            const userData = {
+                name: name,
+                password: password,
+                email: email,
+                gender: gender,
+                birthday: { day, month, year },
+                age: `${age} anos`,
+                location: city ? `${city}, ${state}` : '',
+                status: gender === 'male' ? 'Solteiro' : 'Solteira',
+                avatar: gender === 'male' ? 
+                    'https://www.w3schools.com/howto/img_avatar.png' : 
+                    'https://www.w3schools.com/howto/img_avatar2.png',
+                about: '',
+                interests: '',
+                friends: [],
+                communities: []
+            };
+            
+            // Salvar usuário
+            saveUser(email, userData);
+            
+            alert('Cadastro realizado com sucesso! Redirecionando para login...');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

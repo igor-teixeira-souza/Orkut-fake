@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de segurança - orkut</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f3f3;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+    
+    #container {
+        width: 980px;
+        margin: 20px auto;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    #header {
+        background-color: #EDEFF4;
+        padding: 10px 20px;
+        border-bottom: 1px solid #D8DFEA;
+        height: 60px;
+    }
+    
+    #logo {
+        float: left;
+    }
+    
+    #logo img {
+        height: 50px;
+    }
+    
+    /* Área de login estilizada */
+    #login-box {
+        float: right;
+        background-color: white;
+        border: 1px solid #D8DFEA;
+        padding: 5px;
+        margin-top: 5px;
+        font-size: 11px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+    
+    #login-box table {
+        border-collapse: collapse;
+    }
+    
+    #login-box td {
+        padding: 2px;
+        font-size: 11px;
+    }
+    
+    #login-box input[type="text"],
+    #login-box input[type="password"] {
+        width: 120px;
+        border: 1px solid #BDC7D8;
+        padding: 3px;
+        font-size: 11px;
+    }
+    
+    #login-box button {
+        background-color: #5B74A8;
+        color: white;
+        border: none;
+        padding: 4px 10px;
+        font-weight: bold;
+        font-size: 11px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    #login-box button:hover {
+        background-color: #3B5998;
+    }
+    
+    #login-links {
+        font-size: 11px;
+        text-align: right;
+        margin-top: 3px;
+    }
+    
+    #login-links a {
+        color: #3B5998;
+        text-decoration: none;
+    }
+    
+    #login-links a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Área do usuário logado */
+    #user-info {
+        float: right;
+        margin-top: 15px;
+        font-size: 12px;
+        background-color: white;
+        padding: 5px 10px;
+        border: 1px solid #D8DFEA;
+        border-radius: 3px;
+    }
+    
+    #user-info a {
+        color: #3B5998;
+        text-decoration: none;
+    }
+    
+    #user-info a:hover {
+        text-decoration: underline;
+    }
+    
+    #status-selector {
+        margin-left: 10px;
+        font-size: 11px;
+        padding: 2px;
+        border: 1px solid #BDC7D8;
+        border-radius: 2px;
+    }
+    
+    /* Barra de navegação */
+    #nav {
+        clear: both;
+        background-color: #3B5998;
+        padding: 5px 20px;
+        background-image: linear-gradient(to bottom, #6D84B4, #3B5998);
+    }
+    
+    #nav a {
+        color: white;
+        text-decoration: none;
+        margin-right: 15px;
+        font-weight: bold;
+        font-size: 13px;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    }
+    
+    #nav a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Conteúdo principal */
+    #content {
+        padding: 20px;
+    }
+    
+    .box {
+        background-color: #F7F7F7;
+        border: 1px solid #D8DFEA;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 3px;
+    }
+    
+    .box h2 {
+        color: #3B5998;
+        font-size: 18px;
+        margin-top: 0;
+        border-bottom: 1px solid #D8DFEA;
+        padding-bottom: 8px;
+    }
+    
+    /* Rodapé */
+    #footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 11px;
+        color: #777;
+        border-top: 1px solid #D8DFEA;
+        background-color: #F7F7F7;
+    }
+    
+    #footer a {
+        color: #3B5998;
+        text-decoration: none;
+    }
+    
+    #footer a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Estilo específico para a página de segurança */
+    .security-content {
+        line-height: 1.6;
+    }
+    
+    .security-content p {
+        margin-bottom: 15px;
+    }
+    
+    .security-tip {
+        background-color: #FFF8DC;
+        border-left: 4px solid #FFD700;
+        padding: 10px;
+        margin: 15px 0;
+    }
+    
+    .security-warning {
+        background-color: #FFEBEE;
+        border-left: 4px solid #F44336;
+        padding: 10px;
+        margin: 15px 0;
+    }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Orkut.svg/1200px-Orkut.svg.png" alt="orkut">
+            </div>
+            
+            <div id="login-box" style="display: block;">
+                <form id="login-form">
+                    <table>
+                        <tr>
+                            <td><label for="login-email">E-mail:</label></td>
+                            <td><input type="text" id="login-email" placeholder="seu@email.com"></td>
+                            <td rowspan="2"><button type="submit">Login</button></td>
+                        </tr>
+                        <tr>
+                            <td><label for="login-password">Senha:</label></td>
+                            <td><input type="password" id="login-password" placeholder="••••••"></td>
+                        </tr>
+                    </table>
+                    <div id="login-links">
+                        <a href="#">Cadastre-se</a> | 
+                        <a href="#">Esqueceu a senha?</a>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="user-info" style="display: none;">
+                <span>Bem-vindo, <strong id="username-display"></strong></span>
+                <select id="status-selector">
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                </select>
+                | <a href="#" id="logout-link">Sair</a>
+            </div>
+        </div>
+        
+        <div id="nav">
+            <a href="index.html">Início</a>
+            <a href="#">Perfil</a>
+            <a href="#">Amigos</a>
+            <a href="#">Comunidades</a>
+            <a href="#">Fotos</a>
+            <a href="#">Vídeos</a>
+            <a href="#">Depoimentos</a>
+        </div>
+        
+        <div id="content">
+            <div class="box">
+                <h2>Centro de Segurança do orkut</h2>
+                <div class="security-content">
+                    <p>No orkut, levamos a sua segurança muito a sério. Aqui estão algumas dicas e recursos para ajudar você a se proteger e aproveitar a rede social com tranquilidade.</p>
+                    
+                    <div class="security-tip">
+                        <h3>Dicas de Segurança</h3>
+                        <ul>
+                            <li>Nunca compartilhe sua senha com ninguém, nem mesmo com amigos</li>
+                            <li>Use senhas fortes, combinando letras, números e símbolos</li>
+                            <li>Cuidado com mensagens suspeitas ou links enviados por desconhecidos</li>
+                            <li>Configure suas opções de privacidade para controlar quem vê suas informações</li>
+                            <li>Desconfie de promoções ou ofertas que pareçam boas demais para ser verdade</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="security-warning">
+                        <h3>Atenção a Golpes</h3>
+                        <p>Alguns golpes comuns na internet que você deve evitar:</p>
+                        <ul>
+                            <li><strong>Phishing:</strong> Mensagens que tentam enganar você para revelar senhas ou dados pessoais</li>
+                            <li><strong>Falsos prêmios:</strong> Promoções falsas que pedem dados pessoais ou pagamentos</li>
+                            <li><strong>Perfis falsos:</strong> Pessoas se passando por outras para obter informações</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Denuncie Comportamento Inadequado</h3>
+                    <p>Se você encontrar algum conteúdo ou comportamento que viole os <a href="termos.html">Termos de Serviço</a> do orkut, por favor denuncie:</p>
+                    <ul>
+                        <li>Clique no link "Denunciar abuso" disponível em perfis, comunidades e recados</li>
+                        <li>Para casos urgentes, entre em contato com nossa equipe de segurança</li>
+                    </ul>
+                    
+                    <h3>Controles dos Pais</h3>
+                    <p>Se você é pai ou responsável por um menor que usa o orkut:</p>
+                    <ul>
+                        <li>Oriente sobre os riscos da internet</li>
+                        <li>Acompanhe as atividades online</li>
+                        <li>Utilize ferramentas de controle parental disponíveis em seu computador</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="footer">
+            <p>orkut © 2004-2008 - <a href="sobre.html">Sobre o orkut</a> - <a href="seguranca.html">Centro de segurança</a> - <a href="privacidade.html">Privacidade</a> - <a href="termos.html">Termos</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Simulação de login (mesmo código da página principal)
+        const users = {
+            "teixeiraigor525@gmail.com": { password: "senha123" },
+            "lucasgomes123@gmail.com": { password: "senha123" },
+            "thaylinda@gmail.com": { password: "senha123" }
+        };
+
+        const loginForm = document.getElementById('login-form');
+        const loginBox = document.getElementById('login-box');
+        const userInfo = document.getElementById('user-info');
+        const usernameDisplay = document.getElementById('username-display');
+        const logoutLink = document.getElementById('logout-link');
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            if (users[email] && users[email].password === password) {
+                loginBox.style.display = 'none';
+                userInfo.style.display = 'block';
+                usernameDisplay.textContent = email.split('@')[0];
+            } else {
+                alert('E-mail ou senha incorretos!');
+            }
+        });
+
+        logoutLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            loginBox.style.display = 'block';
+            userInfo.style.display = 'none';
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+        });
+    </script>
+</body>
+</html>

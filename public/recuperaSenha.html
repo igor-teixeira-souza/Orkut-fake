@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - orkut</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-image: url('https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/bg.gif');
+            background-repeat: repeat;
+        }
+        
+        #password-container {
+            width: 400px;
+            margin: 50px auto;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        #orkut-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #orkut-logo img {
+            height: 60px;
+        }
+        
+        .password-title {
+            color: #3B5998;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #D8DFEA;
+            padding-bottom: 5px;
+        }
+        
+        .password-form table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .password-form td {
+            padding: 5px 0;
+            vertical-align: middle;
+        }
+        
+        .password-form label {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .password-form input[type="text"],
+        .password-form input[type="email"] {
+            width: 100%;
+            border: 1px solid #BDC7D8;
+            border-radius: 2px;
+            padding: 5px;
+            font-size: 12px;
+        }
+        
+        .password-button {
+            background-color: #5B74A8;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .password-button:hover {
+            background-color: #3B5998;
+        }
+        
+        .password-links {
+            font-size: 11px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .password-links a {
+            color: #3B5998;
+            text-decoration: none;
+        }
+        
+        .password-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .password-instructions {
+            font-size: 11px;
+            color: #666;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+        
+        #password-message {
+            font-size: 12px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            display: none;
+        }
+        
+        .success {
+            background-color: #DFF0D8;
+            color: #3C763D;
+            border: 1px solid #D6E9C6;
+        }
+        
+        .error {
+            background-color: #F2DEDE;
+            color: #A94442;
+            border: 1px solid #EBCCD1;
+        }
+        
+        .language-selector {
+            font-size: 11px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .language-selector a {
+            color: #3B5998;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        
+        .language-selector a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="password-container">
+        <div id="orkut-logo">
+            <img src="https://web.archive.org/web/20090829054011im_/http://www.orkut.com/img/logo.gif" alt="orkut">
+        </div>
+        
+        <div class="password-title">Recuperar sua senha do orkut</div>
+        
+        <div class="password-instructions">
+            Digite o endereço de e-mail associado à sua conta do orkut. Enviaremos um e-mail com um link para redefinir sua senha.
+        </div>
+        
+        <form class="password-form" id="password-form">
+            <table>
+                <tr>
+                    <td width="80"><label for="recovery-email">E-mail:</label></td>
+                    <td><input type="email" id="recovery-email" placeholder="seu@email.com" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="submit" class="password-button">Enviar</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+        <div id="password-message"></div>
+        
+        <div class="password-links">
+            <a href="index.html">Voltar para a página de login</a>
+        </div>
+        
+        <div class="language-selector">
+            <span>Idioma: </span>
+            <a href="#" class="language-option" data-lang="pt">Português</a>
+            <a href="#" class="language-option" data-lang="en">English</a>
+            <a href="#" class="language-option" data-lang="es">Español</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('recovery-email').value.trim();
+            const messageDiv = document.getElementById('password-message');
+            
+            // Simulação de envio de e-mail (em um sistema real, isso seria feito no servidor)
+            if (email) {
+                messageDiv.textContent = `Um e-mail foi enviado para ${email} com instruções para redefinir sua senha.`;
+                messageDiv.className = 'success';
+                messageDiv.style.display = 'block';
+                
+                // Limpar o campo de e-mail
+                document.getElementById('recovery-email').value = '';
+                
+                // Esconder a mensagem após 5 segundos
+                setTimeout(function() {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            } else {
+                messageDiv.textContent = 'Por favor, insira um endereço de e-mail válido.';
+                messageDiv.className = 'error';
+                messageDiv.style.display = 'block';
+            }
+        });
+        
+        // Simulação de mudança de idioma
+        document.querySelectorAll('.language-option').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Funcionalidade de mudança de idioma não implementada neste exemplo.');
+            });
+        });
+    </script>
+</body>
+</html>
