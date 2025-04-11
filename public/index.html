@@ -1073,26 +1073,31 @@
       }
     }
 
-    // Manipulador de login
-    loginForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+   // Manipulador de login
+loginForm.addEventListener('submit', function (event) {
+  event.preventDefault();
 
-      const email = document.getElementById('login-email').value.trim().toLowerCase();
-      const password = document.getElementById('login-password').value;
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
 
-      const users = getUsers();
-      const user = users[email];
+  const users = getUsers();
+  const user = users[email];
 
-      if (user && user.password === password) {
-        // Login bem-sucedido
-        setCurrentUser(user);
-
-        // Recarregar a página para mostrar área logada
-        window.location.reload();
-      } else {
-        alert('E-mail ou senha incorretos!');
-      }
-    });
+  if (user && user.password === password) {
+    // Login bem-sucedido
+    setCurrentUser(user);
+    
+    // Atualiza a interface sem recarregar a página
+    init();
+    
+    // Opcional: Focar no campo de mensagem após login
+    if (messageInput) {
+      messageInput.focus();
+    }
+  } else {
+    alert('E-mail ou senha incorretos!');
+  }
+});
 
     // Link para cadastro
     signupLink.addEventListener('click', function (e) {
