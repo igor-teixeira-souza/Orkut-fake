@@ -809,437 +809,409 @@
     </div>
   </div>
 
-  <script>
-    // Funções para gerenciar usuários
-    function getUsers() {
-      return JSON.parse(localStorage.getItem('orkutUsers')) || {};
-    }
+      <script>
+        // Funções para gerenciar usuários
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('orkutUsers')) || {};
+        }
 
-    function saveUser(email, userData) {
-      const users = getUsers();
-      users[email] = userData;
-      localStorage.setItem('orkutUsers', JSON.stringify(users));
-    }
+        function saveUser(email, userData) {
+            const users = getUsers();
+            users[email] = userData;
+            localStorage.setItem('orkutUsers', JSON.stringify(users));
+        }
 
-    function getCurrentUser() {
-      return JSON.parse(sessionStorage.getItem('currentUser'));
-    }
+        function getCurrentUser() {
+            return JSON.parse(sessionStorage.getItem('currentUser'));
+        }
 
-    function setCurrentUser(user) {
-      sessionStorage.setItem('currentUser', JSON.stringify(user));
-    }
+        function setCurrentUser(user) {
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
+        }
 
-    function logout() {
-      sessionStorage.removeItem('currentUser');
-      window.location.href = 'index.html';
-    }
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
 
-    // Elementos do DOM
-    const loginContainer = document.getElementById('login-container');
-    const container = document.getElementById('container');
-    const loginForm = document.getElementById('login-form');
-    const signupLink = document.getElementById('signup-link');
-    const userInfo = document.getElementById('user-info');
-    const loggedContent = document.getElementById('logged-content');
-    const usernameDisplay = document.getElementById('username-display');
-    const logoutLink = document.getElementById('logout-link');
-    const statusSelector = document.getElementById('status-selector');
-    const nav = document.getElementById('nav');
-    const profileOnlineStatus = document.getElementById('profile-online-status');
+        // Elementos do DOM
+        const loginContainer = document.getElementById('login-container');
+        const container = document.getElementById('container');
+        const loginForm = document.getElementById('login-form');
+        const signupLink = document.getElementById('signup-link');
+        const usernameDisplay = document.getElementById('username-display');
+        const logoutLink = document.getElementById('logout-link');
+        const statusSelector = document.getElementById('status-selector');
+        const nav = document.getElementById('nav');
+        const profileOnlineStatus = document.getElementById('profile-online-status');
+        const profileName = document.getElementById('profile-name');
+        const profileAge = document.getElementById('profile-age');
+        const profileLocation = document.getElementById('profile-location');
+        const profileStatus = document.getElementById('profile-status');
+        const profileImage = document.getElementById('profile-image');
+        const friendsList = document.getElementById('friends-list');
+        const communitiesList = document.getElementById('communities-list');
+        const friendsCount = document.getElementById('friends-count');
+        const communitiesCount = document.getElementById('communities-count');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        const profileView = document.getElementById('profile-view');
+        const messages = document.getElementById('messages');
+        const messageForm = document.getElementById('message-form');
+        const messageInput = document.getElementById('message');
+        const editProfilePage = document.getElementById('edit-profile-page');
+        const profileForm = document.getElementById('profile-form');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+        const profileImageEdit = document.getElementById('profile-image-edit');
+        const profileImageUpload = document.getElementById('profile-image-upload');
+        const editName = document.getElementById('edit-name');
+        const editGender = document.getElementById('edit-gender');
+        const editDay = document.getElementById('edit-day');
+        const editMonth = document.getElementById('edit-month');
+        const editYear = document.getElementById('edit-year');
+        const editCity = document.getElementById('edit-city');
+        const editState = document.getElementById('edit-state');
+        const editAbout = document.getElementById('edit-about');
+        const editInterests = document.getElementById('edit-interests');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageContents = document.querySelectorAll('.page-content');
 
-    // Elementos do perfil
-    const profileName = document.getElementById('profile-name');
-    const profileAge = document.getElementById('profile-age');
-    const profileLocation = document.getElementById('profile-location');
-    const profileStatus = document.getElementById('profile-status');
-    const profileImage = document.getElementById('profile-image');
-    const friendsList = document.getElementById('friends-list');
-    const communitiesList = document.getElementById('communities-list');
-    const friendsCount = document.getElementById('friends-count');
-    const communitiesCount = document.getElementById('communities-count');
-    const editProfileBtn = document.getElementById('edit-profile-btn');
-    const profileView = document.getElementById('profile-view');
+        // Conectar ao Socket.io
+        const socket = io();
 
-    // Elementos do chat
-    const messages = document.getElementById('messages');
-    const messageForm = document.getElementById('message-form');
-    const messageInput = document.getElementById('message');
+        // Preencher dropdown de datas
+        function populateDateDropdowns() {
+            // Dias
+            for (let i = 1; i <= 31; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                editDay.appendChild(option);
+            }
+            
+            // Anos
+            const currentYear = new Date().getFullYear();
+            for (let i = currentYear; i >= currentYear - 100; i--) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                editYear.appendChild(option);
+            }
+        }
 
-    // Elementos da edição de perfil
-    const editProfilePage = document.getElementById('edit-profile-page');
-    const profilePage = document.getElementById('profile-page');
-    const profileForm = document.getElementById('profile-form');
-    const cancelEditBtn = document.getElementById('cancel-edit');
-    const profileImageEdit = document.getElementById('profile-image-edit');
-    const profileImageUpload = document.getElementById('profile-image-upload');
-    const editName = document.getElementById('edit-name');
-    const editGender = document.getElementById('edit-gender');
-    const editDay = document.getElementById('edit-day');
-    const editMonth = document.getElementById('edit-month');
-    const editYear = document.getElementById('edit-year');
-    const editCity = document.getElementById('edit-city');
-    const editState = document.getElementById('edit-state');
-    const editStatus = document.getElementById('edit-status');
-    const editAbout = document.getElementById('edit-about');
-    const editInterests = document.getElementById('edit-interests');
+        // Mostrar página específica
+        function showPage(pageId) {
+            pageContents.forEach(page => {
+                page.style.display = page.getAttribute('data-page') === pageId ? 'block' : 'none';
+            });
+            
+            if (pageId === 'home') {
+                document.getElementById('content').style.display = 'flex';
+            }
+            
+            if (pageId === 'profile') {
+                loadProfileView();
+            }
+        }
 
-    // Navegação
-    const navLinks = document.querySelectorAll('.nav-link');
-    const pageContents = document.querySelectorAll('.page-content');
-
-    // Preencher dropdown de dias e anos
-    function populateDateDropdowns() {
-      // Dias (1-31)
-      for (let i = 1; i <= 31; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        editDay.appendChild(option);
-      }
-
-      // Anos (últimos 100 anos)
-      const currentYear = new Date().getFullYear();
-      for (let i = currentYear; i >= currentYear - 100; i--) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        editYear.appendChild(option);
-      }
-    }
-
-    // Mostrar página específica
-    function showPage(pageId) {
-      pageContents.forEach(page => {
-        page.style.display = page.getAttribute('data-page') === pageId ? 'block' : 'none';
-      });
-
-      if (pageId === 'home') {
-        document.getElementById('content').style.display = 'flex';
-      }
-
-      // Se for a página de perfil, carregar os dados
-      if (pageId === 'profile') {
-        loadProfileView();
-      }
-    }
-
-    // Carregar visualização do perfil
-    function loadProfileView() {
-      const currentUser = getCurrentUser();
-      if (!currentUser) return;
-
-      profileView.innerHTML = `
+        // Carregar visualização do perfil
+        function loadProfileView() {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+            
+            profileView.innerHTML = `
                 <div style="text-align: center;">
                     <div style="width: 150px; height: 150px; border: 1px solid #ccc; margin: 0 auto 10px; overflow: hidden;">
-                        <img src="${currentUser.avatar}" alt="Foto do perfil" style="max-width: 100%; max-height: 100%;">
+                        <img src="${currentUser.avatar || 'https://via.placeholder.com/150'}" alt="Foto do perfil" style="max-width: 100%; max-height: 100%;">
                     </div>
                     <h3>${currentUser.name}</h3>
                 </div>
                 <div style="margin-top: 20px;">
-                    <p><strong>Idade:</strong> ${currentUser.age}</p>
-                    <p><strong>Localização:</strong> ${currentUser.location}</p>
-                    <p><strong>Estado civil:</strong> ${currentUser.status}</p>
+                    <p><strong>Idade:</strong> ${currentUser.age || 'Não informado'}</p>
+                    <p><strong>Localização:</strong> ${currentUser.location || 'Não informado'}</p>
+                    <p><strong>Estado civil:</strong> ${currentUser.status || 'Não informado'}</p>
                     <p><strong>Sobre mim:</strong> ${currentUser.about || 'Não informado'}</p>
                     <p><strong>Interesses:</strong> ${currentUser.interests || 'Não informado'}</p>
                 </div>
-            `;
-
-      profileView.innerHTML += `
                 <div style="text-align: center; margin-top: 20px;">
                     <button id="edit-this-profile" class="edit-profile-btn">Editar Meu Perfil</button>
                 </div>
             `;
+            
+            document.getElementById('edit-this-profile').addEventListener('click', showEditProfile);
+        }
 
-      document.getElementById('edit-this-profile').addEventListener('click', function () {
-        showEditProfile();
-      });
-    }
+        // Mostrar formulário de edição de perfil
+        function showEditProfile() {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+            
+            // Preencher formulário com dados atuais
+            editName.value = currentUser.name;
+            profileImageEdit.src = currentUser.avatar || 'https://via.placeholder.com/150';
+            editGender.value = currentUser.gender || 'male';
+            
+            if (currentUser.birthday) {
+                editDay.value = currentUser.birthday.day || 1;
+                editMonth.value = currentUser.birthday.month || 1;
+                editYear.value = currentUser.birthday.year || new Date().getFullYear();
+            }
+            
+            if (currentUser.location) {
+                const [city, state] = currentUser.location.split(', ');
+                editCity.value = city || '';
+                editState.value = state || '';
+            }
+            
+            editStatus.value = currentUser.status ? currentUser.status.toLowerCase().replace('(a)', '') : 'single';
+            editAbout.value = currentUser.about || '';
+            editInterests.value = currentUser.interests || '';
+            
+            showPage('edit-profile');
+        }
 
-    // Mostrar formulário de edição de perfil
-    function showEditProfile() {
-      const currentUser = getCurrentUser();
-      if (!currentUser) return;
-
-      // Preencher formulário com dados atuais
-      editName.value = currentUser.name;
-      profileImageEdit.src = currentUser.avatar;
-      editGender.value = currentUser.gender;
-
-      if (currentUser.birthday) {
-        editDay.value = currentUser.birthday.day;
-        editMonth.value = currentUser.birthday.month;
-        editYear.value = currentUser.birthday.year;
-      }
-
-      if (currentUser.location) {
-        const [city, state] = currentUser.location.split(', ');
-        editCity.value = city;
-        editState.value = state ? state.trim() : '';
-      }
-
-      editStatus.value = currentUser.status.toLowerCase().replace('(a)', '');
-      editAbout.value = currentUser.about || '';
-      editInterests.value = currentUser.interests || '';
-
-      showPage('edit-profile');
-    }
-
-    // Preencher lista de amigos
-    function populateFriendsList() {
-      friendsList.innerHTML = '';
-      const currentUser = getCurrentUser();
-      if (!currentUser || !currentUser.friends) return;
-
-      currentUser.friends.forEach(friend => {
-        const li = document.createElement('li');
-        li.innerHTML = `
+        // Preencher lista de amigos
+        function populateFriendsList() {
+            friendsList.innerHTML = '';
+            const currentUser = getCurrentUser();
+            if (!currentUser || !currentUser.friends) {
+                friendsCount.textContent = '(0)';
+                return;
+            }
+            
+            currentUser.friends.forEach(friend => {
+                const li = document.createElement('li');
+                li.innerHTML = `
                     <div class="friend-avatar">
-                        <img src="${friend.avatar}" alt="${friend.name}">
+                        <img src="${friend.avatar || 'https://via.placeholder.com/30'}" alt="${friend.name}">
                     </div>
                     <span class="${friend.online ? 'online' : 'offline'}">${friend.name}</span>
                 `;
-        friendsList.appendChild(li);
-      });
-      friendsCount.textContent = `(${currentUser.friends ? currentUser.friends.length : 0})`;
-    }
+                friendsList.appendChild(li);
+            });
+            friendsCount.textContent = `(${currentUser.friends.length})`;
+        }
 
-    // Preencher lista de comunidades
-    function populateCommunitiesList() {
-      communitiesList.innerHTML = '';
-      const currentUser = getCurrentUser();
-      if (!currentUser || !currentUser.communities) return;
+        // Preencher lista de comunidades
+        function populateCommunitiesList() {
+            communitiesList.innerHTML = '';
+            const currentUser = getCurrentUser();
+            if (!currentUser || !currentUser.communities) {
+                communitiesCount.textContent = '(0)';
+                return;
+            }
+            
+            currentUser.communities.forEach(community => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#">${community}</a>`;
+                communitiesList.appendChild(li);
+            });
+            communitiesCount.textContent = `(${currentUser.communities.length})`;
+        }
 
-      currentUser.communities.forEach(community => {
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="#">${community}</a>`;
-        communitiesList.appendChild(li);
-      });
-      communitiesCount.textContent = `(${currentUser.communities ? currentUser.communities.length : 0})`;
-    }
-
-    // Adicionar mensagem ao chat
-    function addMessageToChat(message) {
-      const item = document.createElement('li');
-      item.innerHTML = `
+        // Adicionar mensagem ao chat
+        function addMessageToChat(message) {
+            const item = document.createElement('li');
+            item.innerHTML = `
                 <div class="message-header">
-                    <img src="${message.avatar}" class="message-avatar" alt="${message.user}">
+                    <img src="${message.avatar || 'https://via.placeholder.com/30'}" class="message-avatar" alt="${message.user}">
                     <strong style="color: #3B5998;">${message.user}</strong>
                     <span class="message-time">${message.time}</span>
                 </div>
                 <div style="word-wrap: break-word; font-size: 12px; padding: 5px 0;">${message.text}</div>
             `;
-      messages.appendChild(item);
-      messages.scrollTop = messages.scrollHeight;
-    }
+            messages.appendChild(item);
+            messages.scrollTop = messages.scrollHeight;
+        }
 
-    // Calcular idade a partir da data de nascimento
-    function calculateAge(year, month, day) {
-      const birthDate = new Date(year, month - 1, day);
-      const ageDiff = Date.now() - birthDate.getTime();
-      const ageDate = new Date(ageDiff);
-      return Math.abs(ageDate.getUTCFullYear() - 1970);
-    }
+        // Calcular idade
+        function calculateAge(year, month, day) {
+            const birthDate = new Date(year, month - 1, day);
+            const ageDiff = Date.now() - birthDate.getTime();
+            const ageDate = new Date(ageDiff);
+            return Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
 
-    // Inicializar a página
-    function init() {
-      populateDateDropdowns();
+        // Inicializar a página
+        function init() {
+            populateDateDropdowns();
+            
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                // Usuário logado
+                loginContainer.style.display = 'none';
+                container.style.display = 'block';
+                nav.style.display = 'block';
+                
+                // Preencher informações
+                usernameDisplay.textContent = currentUser.name;
+                profileName.textContent = currentUser.name;
+                profileAge.textContent = currentUser.age || '--';
+                profileLocation.textContent = currentUser.location || '--';
+                profileStatus.textContent = currentUser.status || '--';
+                profileImage.src = currentUser.avatar || 'https://via.placeholder.com/150';
+                
+                // Preencher listas
+                populateFriendsList();
+                populateCommunitiesList();
+                
+                // Mostrar página inicial
+                showPage('home');
+            } else {
+                // Não logado
+                loginContainer.style.display = 'block';
+                container.style.display = 'none';
+            }
+        }
 
-      // Verificar se há usuário logado
-      const currentUser = getCurrentUser();
-      if (currentUser) {
-        // Usuário já está logado - mostrar área logada
-        loginContainer.style.display = 'none';
-        container.style.display = 'block';
-        nav.style.display = 'block';
+        // Event Listeners
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+            
+            const users = getUsers();
+            const user = users[email];
+            
+            if (user && user.password === password) {
+                setCurrentUser(user);
+                init();
+                if (messageInput) messageInput.focus();
+            } else {
+                alert('E-mail ou senha incorretos!');
+            }
+        });
 
-        // Preencher informações do usuário
-        usernameDisplay.textContent = currentUser.name;
-        profileName.textContent = currentUser.name;
-        profileAge.textContent = currentUser.age || '--';
-        profileLocation.textContent = currentUser.location || '--';
-        profileStatus.textContent = currentUser.status || '--';
-        profileImage.src = currentUser.avatar || 'https://via.placeholder.com/150';
+        signupLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Página de cadastro não implementada neste exemplo');
+        });
 
-        // Preencher listas
-        populateFriendsList();
-        populateCommunitiesList();
+        logoutLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            logout();
+        });
 
-        // Mostrar página inicial
-        showPage('home');
-      } else {
-        // Nenhum usuário logado - mostrar tela de login
-        loginContainer.style.display = 'block';
-        container.style.display = 'none';
-      }
-    }
+        statusSelector.addEventListener('change', function() {
+            const status = this.value;
+            profileOnlineStatus.textContent = status === 'online' ? 'Online' : 'Offline';
+            profileOnlineStatus.className = status === 'online' ? 'online' : 'offline';
+        });
 
-   // Manipulador de login
-loginForm.addEventListener('submit', function (event) {
-  event.preventDefault();
+        messageForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const messageText = messageInput.value.trim();
+            const currentUser = getCurrentUser();
+            
+            if (messageText && currentUser) {
+                const now = new Date();
+                const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                const messageData = {
+                    user: currentUser.name,
+                    avatar: currentUser.avatar || 'https://via.placeholder.com/30',
+                    text: messageText,
+                    time: timeString
+                };
+                
+                socket.emit('chat message', messageData);
+                addMessageToChat(messageData);
+                messageInput.value = '';
+            }
+        });
 
-  const email = document.getElementById('login-email').value.trim().toLowerCase();
-  const password = document.getElementById('login-password').value;
+        socket.on('chat message', function(data) {
+            addMessageToChat(data);
+        });
 
-  const users = getUsers();
-  const user = users[email];
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                showPage(this.getAttribute('data-page'));
+            });
+        });
 
-  if (user && user.password === password) {
-    // Login bem-sucedido
-    setCurrentUser(user);
-    
-    // Atualiza a interface sem recarregar a página
-    init();
-    
-    // Opcional: Focar no campo de mensagem após login
-    if (messageInput) {
-      messageInput.focus();
-    }
-  } else {
-    alert('E-mail ou senha incorretos!');
-  }
-});
+        editProfileBtn.addEventListener('click', showEditProfile);
 
-    // Link para cadastro
-    signupLink.addEventListener('click', function (e) {
-      e.preventDefault();
-      window.location.href = 'cadastro.html';
-    });
+        cancelEditBtn.addEventListener('click', function() {
+            showPage('home');
+        });
 
-    // Manipulador de logout
-    logoutLink.addEventListener('click', function (event) {
-      event.preventDefault();
-      logout();
-    });
+        profileImageUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImageEdit.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-    // Manipulador de status
-    statusSelector.addEventListener('change', function () {
-      const status = this.value;
-      profileOnlineStatus.textContent = status === 'online' ? 'Online' : 'Offline';
-      profileOnlineStatus.className = status === 'online' ? 'online' : 'offline';
-    });
+        profileForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+            
+            // Atualizar dados
+            currentUser.name = editName.value;
+            currentUser.avatar = profileImageEdit.src;
+            currentUser.gender = editGender.value;
+            currentUser.birthday = {
+                day: parseInt(editDay.value),
+                month: parseInt(editMonth.value),
+                year: parseInt(editYear.value)
+            };
+            
+            currentUser.age = `${calculateAge(currentUser.birthday.year, currentUser.birthday.month, currentUser.birthday.day)} anos`;
+            currentUser.location = `${editCity.value}, ${editState.value}`.trim();
+            
+            switch(editStatus.value) {
+                case 'single': currentUser.status = 'Solteiro(a)'; break;
+                case 'married': currentUser.status = 'Casado(a)'; break;
+                case 'relationship': currentUser.status = 'Em um relacionamento'; break;
+                default: currentUser.status = 'Solteiro(a)';
+            }
+            
+            currentUser.about = editAbout.value;
+            currentUser.interests = editInterests.value;
+            
+            // Atualizar storage
+            const users = getUsers();
+            users[currentUser.email] = currentUser;
+            localStorage.setItem('orkutUsers', JSON.stringify(users));
+            setCurrentUser(currentUser);
+            
+            // Atualizar UI
+            init();
+            showPage('home');
+        });
 
-    // Manipulador de envio de mensagem
-messageForm.addEventListener('submit', function(event) {
-  event.preventDefault();
-  
-  const messageText = messageInput.value.trim();
-  const currentUser = getCurrentUser();
-  
-  if (messageText && currentUser) {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const timeString = `${hours}:${minutes}`;
-    
-    const messageData = {
-      user: currentUser.name,
-      avatar: currentUser.avatar,
-      text: messageText,
-      time: timeString
-    };
-    
-    // Enviar mensagem para o servidor via Socket.io
-    socket.emit('chat message', messageData);
-    
-    // Adicionar a própria mensagem ao chat localmente
-    addMessageToChat(messageData);
-    
-    messageInput.value = '';
-  }
-});
+        // Iniciar aplicação
+        init();
 
-// Receber mensagens do servidor
-socket.on('chat message', function(data) {
-  addMessageToChat(data);
-});
-
-    // Manipulador de navegação
-    navLinks.forEach(link => {
-      link.addEventListener('click', function (event) {
-        event.preventDefault();
-        const page = this.getAttribute('data-page');
-        showPage(page);
-      });
-    });
-
-    // Manipulador de edição de perfil
-    editProfileBtn.addEventListener('click', showEditProfile);
-
-    // Manipulador de cancelar edição
-    cancelEditBtn.addEventListener('click', function () {
-      showPage('home');
-    });
-
-    // Manipulador de upload de imagem
-    profileImageUpload.addEventListener('change', function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          profileImageEdit.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // Manipulador de envio do formulário de perfil
-    profileForm.addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      const currentUser = getCurrentUser();
-      if (!currentUser) return;
-
-      // Atualizar dados do usuário
-      currentUser.name = editName.value;
-      currentUser.avatar = profileImageEdit.src;
-      currentUser.gender = editGender.value;
-      currentUser.birthday = {
-        day: editDay.value,
-        month: editMonth.value,
-        year: editYear.value
-      };
-
-      // Calcular idade
-      const age = calculateAge(currentUser.birthday.year, currentUser.birthday.month, currentUser.birthday.day);
-      currentUser.age = `${age} anos`;
-
-      currentUser.location = `${editCity.value}, ${editState.value}`.trim();
-      currentUser.status = editStatus.value === 'single' ? 'Solteiro(a)' :
-        editStatus.value === 'married' ? 'Casado(a)' : 'Em um relacionamento';
-      currentUser.about = editAbout.value;
-      currentUser.interests = editInterests.value;
-
-      // Atualizar no localStorage
-      const users = getUsers();
-      users[currentUser.email] = currentUser;
-      localStorage.setItem('orkutUsers', JSON.stringify(users));
-
-      // Atualizar na sessão
-      setCurrentUser(currentUser);
-
-      // Atualizar exibição
-      usernameDisplay.textContent = currentUser.name;
-      profileName.textContent = currentUser.name;
-      profileAge.textContent = currentUser.age;
-      profileLocation.textContent = currentUser.location;
-      profileStatus.textContent = currentUser.status;
-      profileImage.src = currentUser.avatar;
-
-      // Voltar para a página inicial
-      showPage('home');
-    });
-
-    // Conectar ao Socket.io
-    const socket = io();
-
-    // Receber mensagens do servidor
-    socket.on('chat message', function (data) {
-      addMessageToChat(data);
-    });
-
-    // Inicializar a aplicação
-    init();
+        // Dados iniciais para teste (pode remover depois)
+        if (!localStorage.getItem('orkutUsers')) {
+            const testUser = {
+                email: "teste@teste.com",
+                password: "123456",
+                name: "Usuário Teste",
+                avatar: "https://via.placeholder.com/150",
+                age: "25 anos",
+                location: "São Paulo, SP",
+                status: "Solteiro(a)",
+                about: "Este é um usuário de teste",
+                interests: "Música, Esportes, Tecnologia",
+                friends: [
+                    { name: "Amigo 1", avatar: "https://via.placeholder.com/30", online: true },
+                    { name: "Amigo 2", avatar: "https://via.placeholder.com/30", online: false }
+                ],
+                communities: ["Programadores", "Música Brasileira", "Futebol"]
+            };
+            saveUser(testUser.email, testUser);
+        }
   </script>
 </body>
-
 </html>
